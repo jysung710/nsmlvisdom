@@ -3,4 +3,13 @@ MAINTAINER Jinyoung Sung <jysung710@kaist.ac.kr>
 
 RUN pip install --upgrade pip
 RUN pip install torchvision visdom
-CMD ["python", "-m", "visdom.server"]
+
+RUN python -c "from visdom.server import download_scripts; download_scrips()"
+
+ENV PORT=8097 \
+    ENV_PATH="~/.visdom/" \
+    LOGGING_LEVEL=INFO
+
+EXPOSE $PORT
+
+CMD python -m visdom.server -port ${PORT} -env_path ${ENV_PATH} -logging_level ${LOGGING_LEVEL}
